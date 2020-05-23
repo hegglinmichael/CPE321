@@ -78,24 +78,25 @@ def submit(key, iv):
 	encode_str += ";session-id=31337"
 
 	encode_str = pad_string(encode_str)
+
 	print(encode_str)
 	blocks = input_to_blocks(encode_str, iv)
 
 	cipher = AES.new(key, AES.MODE_ECB)
 	prev = iv
+	# this is where I mess with the IV
+	te = XOR(blocks[0], ";admin=true;tttt")
+	prev = XOR(te, iv)
+	i = 1
 
 	for block in blocks:
 		t = encrypt(block, cipher)
 		t = encrypt(XOR(block, prev), cipher)
+
 		cipher_text.append(t)
 		prev = t
 
-	# print(cipher_text)
-	# for i in cipher_text:
-	# 	total_cipher += i
-
 	return cipher_text
-	# return total_cipher
 
 # Description
 #	verify method as specified in verify
@@ -119,7 +120,7 @@ def verify(key, iv, encoded_str):
 	print(total_str)
 
 
-	if "admin=true" in decrypted_cipher:
+	if "admin=true" in total_str:
 		return True
 	else:
 		return False
@@ -163,9 +164,28 @@ if __name__ == "__main__":
 	print("--------------------------------------------------------------------------\n")
 
 
+		# if (i == 1):
+		# 	tt = list(t)
+		# 	print(tt)
+		# 	tt[1] = "a"
+		# 	# tt[1] = chr(ord(tt[1]) ^ ord("a"))
+		# 	# tt[2] = chr(ord(tt[2]) ^ ord("d"))
+		# 	# tt[3] = chr(ord(tt[3]) ^ ord("m"))
+		# 	# tt[4] = chr(ord(tt[4]) ^ ord("i"))
+		# 	# tt[5] = chr(ord(tt[5]) ^ ord("n"))
+		# 	# tt[6] = chr(ord(tt[6]) ^ ord("="))
+		# 	# tt[7] = chr(ord(tt[7]) ^ ord("t"))
+		# 	# tt[8] = chr(ord(tt[8]) ^ ord("r"))
+		# 	# tt[9] = chr(ord(tt[9]) ^ ord("u"))
+		# 	# tt[10] = chr(ord(tt[10]) ^ ord("e"))
+		# 	i = 0
+
+		# 	t = "".join(tt)
 
 
-
+		# if i == 1:
+		# 	t = XOR(t, ";admin=true;tttt")
+		# 	i = 0
 
 
 
