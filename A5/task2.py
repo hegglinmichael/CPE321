@@ -1,5 +1,6 @@
 from Crypto.Cipher import AES
 import urllib
+import urllib
 import sys
 import os
 
@@ -76,6 +77,10 @@ def submit(key, iv):
 
 	encode_str += txt
 	encode_str += ";session-id=31337"
+	en = {"userid" : 456, "userdata" : txt, "session-id" : 31337}
+	encode_str = urllib.urlencode(en)
+	#print(e)
+
 
 	encode_str = pad_string(encode_str)
 
